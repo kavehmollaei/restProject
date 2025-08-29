@@ -8,3 +8,6 @@ for item in lst:
 while True:
     pass
 # comment
+#list comprehensions
+list_1=[item for item in range(10)]
+print(list_1)
