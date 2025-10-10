@@ -12,6 +12,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,mixins,ListAPIView,ListCreateAPIView
 from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 # Create your views here.
 
 
@@ -34,6 +36,7 @@ def IndexView(request):
     return render(request,'index.html',context=context)
 
 class IndexViewclass(TemplateView):
+    """Class-based view for the home page."""
     template_name="home.html"
     
     def get_context_data(self, **kwargs):
@@ -45,6 +48,7 @@ class IndexViewclass(TemplateView):
 
 
 class RedirectToMaktab(RedirectView):
+    """Redirect view to Maktabkhooneh website."""
     permanent = False
     url="https://maktabkhooneh.com"
     def get_redirect_url(self, *args, **kwargs):
@@ -114,93 +118,42 @@ def postdetail(request,id):
 #         else:
 #             return Response(data=serializer.errors)        
     
-# @api_view(['GET','POST'])
-# def postList(request):
-#     print(request.data)
-#     print(type(request.data))
-#     if request.method == "GET":
-#         posts=Post.objects.all()
-#         serializer=PostSerializer(posts,many=True)
-#         return Response(serializer.data)
-#     elif request.method == "POST":
-#         serializer=PostSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response(data=serializer.data)        
-
-class PostDetail(APIView):
-    serializer_class=PostSerializer
-    def get(self,request,id):
-        post=get_object_or_404(Post,pk=id,status=True)
-        serilaizer=PostSerializer(instance=post)
-        return Response(serilaizer.data)
-    def put(self,request,id):
-        post=get_object_or_404(Post,pk=id)
-        serializer=PostSerializer(instance=post,data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(data=serializer.data)
-    def delete(self,request,id):
-        post=get_object_or_404(Post,pk=id)
-        post.delete()
-        return Response({"details":"item removed successfully"},status=status.HTTP_204_NO_CONTENT)
-
-# class PostList(GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
-#     serializer_class = PostSerializer
-#     queryset=Post.objects.all()
-    
-#     def get(self,request,*args,**kwargs):
-#         print(args)
-#         print(kwargs)
-#         return self.list(request,*args,**kwargs)
-#     def post(self,request,*args,**kwargs):
-#         return self.create(request,*args,**kwargs)
-
 class PostList(ListCreateAPIView):
+    """API view for listing and creating posts."""
     serializer_class = PostSerializer
     queryset=Post.objects.all()
 
-    
-
-    # def get(self,request):
-    #     queryset=self.get_queryset()
-    #     serializer=PostSerializer(instance=queryset,many=True)
-    #     return Response(serializer.data)
-        
-    
-
-class PostDetail(GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
-    serializer_class=PostSerializer
-    queryset=Post.objects.filter()
-    lookup_field='id'
-    def get(self,request,*args,**kwargs):
-        print(request)
-        return self.retrieve(request,*args,**kwargs)
-    def put(self,requset,*args,**kwargs):
-        return self.update(requset,*args,**kwargs)
-    def delete(self,request,*args,**kwargs):
-        return self.destroy(request,*args,**kwargs)
-    
-class PostViewSet(viewsets.ViewSet):
-    serializer_class=PostSerializer
-    queryset=Post.objects.all()
-
-    def list(self,request):
-        serializer=PostSerializer(instance=self.queryset,many=True)
-        return Response(data=serializer.data)
-    
-    def retrieve(self,request,id=None):
-        post_object=get_object_or_404(Post,pk=id)
-        serializer=PostSerializer(instance=post_object)
-        return Response(serializer.data)
-
 class PostViewSet(viewsets.ModelViewSet):
+    """ModelViewSet for Post CRUD operations."""
     serializer_class=PostSerializer
     queryset=Post.objects.all()
 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
+    """ModelViewSet for Category CRUD operations."""
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.all()  # type: ignore
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['id', 'name']
+    ordering = ['id']  # default ordering
+    def list(self, request, *args, **kwargs):
+        """Override list method to add custom logging."""
+        print("ddddddddddd")
+        return super().list(request, *args, **kwargs)
 
+class CategoryListAPIView(APIView):
+    """API view for listing and creating categories."""
+    serializer_class = CategorySerializer
 
+    def get(self, request):
+        """Retrieve all categories."""
+        categories = Category.objects.all()  # type: ignore
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """Create a new category."""
+        serializer = CategorySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -1,7 +1,9 @@
-import subprocess
-#this is for test
-with open("s.py",'r') as file:
-    file.write("fdfdffd")
+
 ## test stash
 
 #kaveh mollaei
+i= [1,2,3]
+i= iter(i)
+print("__next__" in dir(i))
+print(next(i))
+print(next(i))

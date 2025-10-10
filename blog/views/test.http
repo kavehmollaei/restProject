@@ -1,0 +1,90 @@
+# ==============================================
+# Category API Sorting Examples
+# ==============================================
+
+# 1. Simple test request (no headers)
+GET http://127.0.0.1:8000/blog/category/
+
+###
+
+# 1b. Alternative with localhost
+GET http://localhost:8000/blog/category/
+
+###
+
+# 1c. Default sorting (by ID ascending) with headers
+GET http://127.0.0.1:8000/blog/category/?ordering=name
+Content-Type: application/json
+
+###
+
+# 2. Sort by name ascending
+GET http://127.0.0.1:8000/blog/category/?ordering=name
+Content-Type: application/json
+
+###
+
+# 3. Sort by name descending
+GET http://127.0.0.1:8000/blog/category/?ordering=-name
+Content-Type: application/json
+
+###
+
+# 4. Sort by ID ascending
+GET http://127.0.0.1:8000/blog/category/?ordering=id
+Content-Type: application/json
+
+###
+
+# 5. Sort by ID descending
+GET http://127.0.0.1:8000/blog/category/?ordering=-id
+Content-Type: application/json
+
+###
+
+# 6. Multiple field sorting (first by name, then by id)
+GET http://127.0.0.1:8000/blog/category/?ordering=name,id
+Content-Type: application/json
+
+###
+
+# 7. Get specific category by ID
+GET http://127.0.0.1:8000/blog/category/1/
+Content-Type: application/json
+
+###
+
+# 8. Create a new category (POST example)
+POST http://127.0.0.1:8000/blog/category/
+Content-Type: application/json
+
+{
+    "name": "Test Category"
+}
+
+###
+
+# 9. Update a category (PUT example - replace category with ID 1)
+PUT http://127.0.0.1:8000/blog/category/1/
+Content-Type: application/json
+
+{
+    "name": "Updated Category Name"
+}
+
+###
+
+# 10. Partial update a category (PATCH example)
+PATCH http://127.0.0.1:8000/blog/category/1/
+Content-Type: application/json
+
+{
+    "name": "Partially Updated Name"
+}
+
+###
+
+# 11. Delete a category (DELETE example - remove category with ID 1)
+DELETE http://127.0.0.1:8000/blog/category/1/
+Content-Type: application/json
+
