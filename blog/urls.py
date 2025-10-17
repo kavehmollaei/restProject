@@ -9,6 +9,7 @@ router.register('post',viewset=PostViewSet,basename='post')
 router.register('category',viewset=CategoryModelViewSet,basename='category')
 urlpatterns = [
     path('categories/', view=CategoryListAPIView.as_view(), name='category-list'),
+    path('kkk/',view=CategoryListAPIView.as_view(),name="CategoryList" )
 ]
 
 urlpatterns += router.urls

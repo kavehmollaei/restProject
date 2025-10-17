@@ -1,0 +1,220 @@
+# ==============================================
+# PostViewSet Filter Examples
+# ==============================================
+# This file demonstrates how to use all three filter backends:
+# 1. DjangoFilterBackend - Exact field filtering
+# 2. SearchFilter - Text search across multiple fields
+# 3. OrderingFilter - Sorting results
+
+# ==============================================
+# 1. DJANGO FILTER BACKEND EXAMPLES
+# ==============================================
+# DjangoFilterBackend allows exact filtering on specific fields
+
+# Filter by status (published posts only)
+GET http://127.0.0.1:8000/blog/post/?status=True
+Content-Type: application/json
+
+###
+
+# Filter by status (draft posts only)
+GET http://127.0.0.1:8000/blog/post/?status=False
+Content-Type: application/json
+
+###
+
+# Filter by category ID
+GET http://127.0.0.1:8000/blog/post/?category=1
+Content-Type: application/json
+
+###
+
+# Filter by author ID
+GET http://127.0.0.1:8000/blog/post/?author=1
+Content-Type: application/json
+
+###
+
+# Combine multiple filters
+GET http://127.0.0.1:8000/blog/post/?status=True&category=1
+Content-Type: application/json
+
+###
+
+# ==============================================
+# 2. SEARCH FILTER EXAMPLES
+# ==============================================
+# SearchFilter searches across title and content fields
+
+# Search for posts containing "python"
+GET http://127.0.0.1:8000/blog/post/?search=python
+Content-Type: application/json
+
+###
+
+# Search for posts containing "django"
+GET http://127.0.0.1:8000/blog/post/?search=django
+Content-Type: application/json
+
+###
+
+# Search for posts containing "tutorial"
+GET http://127.0.0.1:8000/blog/post/?search=tutorial
+Content-Type: application/json
+
+###
+
+# Search with case insensitive matching
+GET http://127.0.0.1:8000/blog/post/?search=PYTHON
+Content-Type: application/json
+
+###
+
+# ==============================================
+# 3. ORDERING FILTER EXAMPLES
+# ==============================================
+# OrderingFilter allows sorting by specified fields
+
+# Sort by title ascending
+GET http://127.0.0.1:8000/blog/post/?ordering=title
+Content-Type: application/json
+
+###
+
+# Sort by title descending
+GET http://127.0.0.1:8000/blog/post/?ordering=-title
+Content-Type: application/json
+
+###
+
+# Sort by creation date ascending (oldest first)
+GET http://127.0.0.1:8000/blog/post/?ordering=created_date
+Content-Type: application/json
+
+###
+
+# Sort by creation date descending (newest first) - This is the default
+GET http://127.0.0.1:8000/blog/post/?ordering=-created_date
+Content-Type: application/json
+
+###
+
+# Sort by update date ascending
+GET http://127.0.0.1:8000/blog/post/?ordering=updated_date
+Content-Type: application/json
+
+###
+
+# Sort by update date descending
+GET http://127.0.0.1:8000/blog/post/?ordering=-updated_date
+Content-Type: application/json
+
+###
+
+# Sort by ID ascending
+GET http://127.0.0.1:8000/blog/post/?ordering=id
+Content-Type: application/json
+
+###
+
+# Sort by ID descending
+GET http://127.0.0.1:8000/blog/post/?ordering=-id
+Content-Type: application/json
+
+###
+
+# Multiple field sorting (first by status, then by title)
+GET http://127.0.0.1:8000/blog/post/?ordering=status,title
+Content-Type: application/json
+
+###
+
+# ==============================================
+# 4. COMBINED FILTER EXAMPLES
+# ==============================================
+# You can combine all three filter types in a single request
+
+# Search + Filter + Order
+GET http://127.0.0.1:8000/blog/post/?search=python&status=true&ordering=-created_date
+Content-Type: application/json
+
+###
+
+# Filter published posts, search for "django", sort by title
+GET http://127.0.0.1:8000/blog/post/?status=true&search=django&ordering=title
+Content-Type: application/json
+
+###
+
+# Filter by category, search for "tutorial", sort by newest first
+GET http://127.0.0.1:8000/blog/post/?category=1&search=tutorial&ordering=-created_date
+Content-Type: application/json
+
+###
+
+# Filter by author, search for "web", sort by update date
+GET http://127.0.0.1:8000/blog/post/?author=1&search=web&ordering=-updated_date
+Content-Type: application/json
+
+###
+
+# ==============================================
+# 5. BASIC CRUD EXAMPLES
+# ==============================================
+
+# Get all posts (with default ordering by newest first)
+GET http://127.0.0.1:8000/blog/post/
+Content-Type: application/json
+
+###
+
+# Get specific post by ID
+GET http://127.0.0.1:8000/blog/post/1/
+Content-Type: application/json
+
+###
+
+# Create a new post
+POST http://127.0.0.1:8000/blog/post/
+Content-Type: application/json
+
+{
+    "title": "New Post Title",
+    "content": "This is the content of the new post.",
+    "author": 1,
+    "category": 1,
+    "status": true
+}
+
+###
+
+# Update a post (PUT - replace entire resource)
+PUT http://127.0.0.1:8000/blog/post/1/
+Content-Type: application/json
+
+{
+    "title": "Updated Post Title",
+    "content": "Updated content of the post.",
+    "author": 1,
+    "category": 1,
+    "status": true
+}
+
+###
+
+# Partial update a post (PATCH - update only specified fields)
+PATCH http://127.0.0.1:8000/blog/post/1/
+Content-Type: application/json
+
+{
+    "title": "Partially Updated Title",
+    "status": false
+}
+
+###
+
+# Delete a post
+DELETE http://127.0.0.1:8000/blog/post/1/
+Content-Type: application/json
+
+###

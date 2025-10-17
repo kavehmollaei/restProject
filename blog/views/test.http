@@ -88,3 +88,41 @@ Content-Type: application/json
 DELETE http://127.0.0.1:8000/blog/category/1/
 Content-Type: application/json
 
+###
+
+# 12. Search categories by name
+GET http://127.0.0.1:8000/blog/category/?search=py
+Content-Type: application/json
+
+###
+
+# 13. Search categories with partial match
+GET http://127.0.0.1:8000/blog/category/?search=web
+Content-Type: application/json
+
+###
+
+# 14. Combine search and ordering
+GET http://127.0.0.1:8000/blog/category/?search=django&ordering=name
+Content-Type: application/json
+
+###
+
+# 15. Search with case insensitive matching
+GET http://127.0.0.1:8000/blog/category/?search=P
+Content-Type: application/json
+
+###
+# 15. Search with case insensitive matching
+GET http://127.0.0.1:8000/blog/post/?ordering=title
+Content-Type: application/json
+
+###
+# 15. Search with case insensitive matching
+GET http://127.0.0.1:8000/blog/post/?search=pyth
+Content-Type: application/json
+
+###
+# 15. Search with case insensitive matching
+GET http://127.0.0.1:8000/blog/post/?search=pyth
+Content-Type: application/json

@@ -1,3 +1,4 @@
+from re import search
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView,RedirectView
@@ -5,6 +6,7 @@ from ..models import Post,Category
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
+#REST Framework imports commented out until package is installed
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from ..serializers import PostSerializer,CategorySerializer
@@ -13,8 +15,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,mixins,ListAPIView,ListCreateAPIView
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
-# Create your views here.
+from rest_framework.filters import OrderingFilter,SearchFilter
+#Create your views here.
 
 
 
@@ -127,18 +129,25 @@ class PostViewSet(viewsets.ModelViewSet):
     """ModelViewSet for Post CRUD operations."""
     serializer_class=PostSerializer
     queryset=Post.objects.all()
-
-
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    ordering_fields = ['id', 'title', 'created_date', 'updated_date']
+    ordering = ['-created_date']  # default ordering by newest first
+    search_fields = ['title', 'content']
+    filterset_fields = ['status', 'category', 'author']
+    def list(self, request, *args, **kwargs):
+        print("Rona")
+        return super().list(request, *args, **kwargs)
 class CategoryModelViewSet(viewsets.ModelViewSet):
     """ModelViewSet for Category CRUD operations."""
     serializer_class = CategorySerializer
     queryset = Category.objects.all()  # type: ignore
-    filter_backends = [OrderingFilter]
+    filter_backends = [OrderingFilter, SearchFilter]
     ordering_fields = ['id', 'name']
     ordering = ['id']  # default ordering
+    search_fields = ['^name']
+    
     def list(self, request, *args, **kwargs):
         """Override list method to add custom logging."""
-        print("ddddddddddd")
         return super().list(request, *args, **kwargs)
 
 class CategoryListAPIView(APIView):
