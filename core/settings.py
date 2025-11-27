@@ -36,9 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django_extensions',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'django.contrib.staticfiles',
     'accounts',
     'blog',
+    'modelTamrin',
+    'django_celery_beat'
     # 'rest_framework'  # Commented out until package is installed
 ]
 
@@ -127,10 +133,25 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "staticfiles"
-    
-]
+    ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+
+    ],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+}
+CELERY_BROKER_URL='redis://localhost:6379'
+CELERY_RESULT_BACKEND=CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT=["application/json"]
+CELERY_TASK_SERIALIZER='json'
+CELERY_TIMEZONE= TIME_ZONE
+CELERY_TASK_DEFAULT_QUEUE='default'
