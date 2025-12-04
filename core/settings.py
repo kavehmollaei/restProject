@@ -142,14 +142,14 @@ AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication'
 
     ],
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
 }
-CELERY_BROKER_URL='redis://localhost:6379'
+CELERY_BROKER_URL='redis://localhost:6379/0'
 CELERY_RESULT_BACKEND=CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT=["application/json"]
 CELERY_TASK_SERIALIZER='json'

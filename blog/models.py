@@ -50,15 +50,6 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
-
-class Dore(models.Model):
-    name=models.CharField(max_length=20)
-    time=models.IntegerField(validators=[MinValueValidator(0,message='Quantity must be at least 0'),MaxValueValidator(500,message='Quantity must be execed 100')]) 
-    teacher=models.ForeignKey(User, on_delete=models.CASCADE)
-    classCode=models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(10)],unique=True)
-    def __str__(self):
-        return self.name
-
 class Students(models.Model):
     FirstName=models.CharField(max_length=20,blank=False,null=False,db_column='firstName')
     LastName=models.CharField(max_length=20,blank=False,null=False,db_column='lastname')
@@ -70,6 +61,16 @@ class Students(models.Model):
 
     def __str__(self):
         return self.LastName
+
+class Dore(models.Model):
+    name=models.CharField(max_length=20)
+    time=models.IntegerField(validators=[MinValueValidator(0,message='Quantity must be at least 0'),MaxValueValidator(500,message='Quantity must be execed 100')]) 
+    teacher=models.ForeignKey(User, on_delete=models.CASCADE)
+    classCode=models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(10)],unique=True)
+    student = models.ManyToManyField(Students)
+    def __str__(self):
+        return self.name
+
 
 
 class Ticket(models.Model):

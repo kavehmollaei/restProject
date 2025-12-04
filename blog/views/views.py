@@ -2,14 +2,14 @@ from re import search
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView,RedirectView
-from ..models import Post,Category
+from ..models import Post,Category,Dore
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 #REST Framework imports commented out until package is installed
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from ..serializers import PostSerializer,CategorySerializer
+from ..serializers import PostSerializer,CategorySerializer,doreModelserializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView,mixins,ListAPIView,ListCreateAPIView
@@ -398,3 +398,9 @@ class CategoryViewSetWithCustomActions(viewsets.ModelViewSet):
     def custom_action(self, request):
         """Custom action with custom URL path."""
         return Response({"message": "This is a custom action"})
+
+
+class DoreModelViewset(viewsets.ModelViewSet):
+    http_method_names = ["get","put","post"]
+    serializer_class = doreModelserializer
+    queryset = Dore.objects.all()
