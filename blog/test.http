@@ -17,3 +17,18 @@ Content-Type: application/json
     "service":"ssh"
   }
 
+###
+PUT http://127.0.0.1:8000/blog/dore/1/
+Content-Type: application/json
+
+{   
+    "name": "Django@python",
+    "time": 50,
+    "classCode": 2,
+    "teacher":2,
+    "student": [
+      2,1
+    ],
+    "service":"ping"
+  }
+

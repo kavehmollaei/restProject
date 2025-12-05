@@ -1,5 +1,8 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Post,Category,Dore
+
+User = get_user_model()
 
 
 # class PostSerializer(serializers.Serializer):
@@ -56,6 +59,7 @@ class doreModelserializer(serializers.ModelSerializer):
     name=serializers.CharField(required=True,allow_blank=False)
     service = serializers.ChoiceField(choices=["ssh", "web", "ping"])
     updated_date = serializers.DateTimeField(read_only=True)
+    
     class Meta:
         model=Dore
         fields = ["name","time","classCode","teacher","student","service","updated_date"]
