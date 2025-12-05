@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'accounts',
     'blog',
     'modelTamrin',
-    'django_celery_beat'
+    'django_celery_beat',
+    'channels',
     # 'rest_framework'  # Commented out until package is installed
 ]
 

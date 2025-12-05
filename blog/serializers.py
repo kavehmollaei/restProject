@@ -53,9 +53,15 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'family', 'enable']
 
 class doreModelserializer(serializers.ModelSerializer):
+    name=serializers.CharField(required=True,allow_blank=False)
+    service = serializers.ChoiceField(choices=["ssh", "web", "ping"])
+    updated_date = serializers.DateTimeField(read_only=True)
     class Meta:
         model=Dore
-        fields = "__all__"
+        fields = ["name","time","classCode","teacher","student","service","updated_date"]
+    
+    def validate_name(self,value):
+        return value.lower()
 
 # class AuthorUsernameField(serializers.RelatedField):
 #     def to_representation(self, value):

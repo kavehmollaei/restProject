@@ -1,4 +1,19 @@
 ###
 GET http://127.0.0.1:8000/blog/dore/
+Content-Type: application/json
 
+###
+POST http://127.0.0.1:8000/blog/dore/
+Content-Type: application/json
+
+{   
+    "name": "Django@python",
+    "time": 50,
+    "classCode": 10,
+    "teacher": 6,
+    "student": [
+      2,1
+    ],
+    "service":"ssh"
+  }
 

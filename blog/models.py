@@ -4,6 +4,7 @@ from accounts.models import User
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from .customevalidators import validate_11_digit_phone
+from django.utils import timezone
 # Create your models here.
 User = get_user_model()
 #managers
@@ -53,7 +54,7 @@ class Category(models.Model):
 class Students(models.Model):
     FirstName=models.CharField(max_length=20,blank=False,null=False,db_column='firstName')
     LastName=models.CharField(max_length=20,blank=False,null=False,db_column='lastname')
-    Dore=models.ForeignKey('Dore',on_delete=models.CASCADE)
+    # Dore=models.ForeignKey('Dore',on_delete=models.CASCADE)
     Address=models.TextField(blank=True,null=True,max_length=200)
     PhoneNumber=models.CharField(max_length=15,validators=[validate_11_digit_phone])
     Email=models.EmailField(null=True,blank=True)
@@ -63,13 +64,17 @@ class Students(models.Model):
         return self.LastName
 
 class Dore(models.Model):
-    name=models.CharField(max_length=20)
+    name=models.CharField(max_length=20,null=False,blank=False)
     time=models.IntegerField(validators=[MinValueValidator(0,message='Quantity must be at least 0'),MaxValueValidator(500,message='Quantity must be execed 100')]) 
     teacher=models.ForeignKey(User, on_delete=models.CASCADE)
     classCode=models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(10)],unique=True)
     student = models.ManyToManyField(Students)
+    service = models.CharField(choices=[("ssh", "Ssh"),("web", "Web"),("ping", "Ping")],null=True,blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.name
+        # Ensure a string is always returned for admin/action checkbox rendering
+        return self.name or ""
 
 
 
